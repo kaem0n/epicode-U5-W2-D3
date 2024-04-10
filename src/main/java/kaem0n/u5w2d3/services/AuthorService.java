@@ -27,7 +27,7 @@ public class AuthorService {
             body.setAvatar("https://ui-avatars.com/api/?name=" + body.getName() + "+" + body.getSurname());
             ad.save(body);
             return body;
-        } else throw new BadRequestException("Email \"" + body.getEmail() + "\" is already taken.");
+        } else throw new BadRequestException("Email '" + body.getEmail() + "' is already taken.");
     }
 
     public Author findById(long id) {
@@ -41,6 +41,7 @@ public class AuthorService {
         found.setSurname(updatedBody.getSurname());
         found.setEmail(updatedBody.getEmail());
         found.setBirthday(updatedBody.getBirthday());
+        this.save(found);
         return found;
     }
 

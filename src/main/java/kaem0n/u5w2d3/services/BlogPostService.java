@@ -40,6 +40,8 @@ public class BlogPostService {
         found.setContent(updatedBody.getContent());
         found.setCoverUrl(updatedBody.getCoverUrl());
         found.setReadingTime(updatedBody.getReadingTime());
+        found.setAuthor(as.findById(updatedBody.getAuthorId()));
+        bpd.save(found);
         return found;
     }
 
