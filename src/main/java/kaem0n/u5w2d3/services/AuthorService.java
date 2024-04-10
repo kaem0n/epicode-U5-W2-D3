@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class AuthorService {
@@ -17,7 +16,6 @@ public class AuthorService {
     }
 
     public Author save(Author body) {
-        body.setId(new Random().nextLong(100000000, 999999999));
         body.setAvatar("https://ui-avatars.com/api/?name=" + body.getName() + "+" + body.getSurname());
         this.authorList.add(body);
         return body;
