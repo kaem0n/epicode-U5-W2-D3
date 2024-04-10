@@ -23,7 +23,7 @@ public class BlogPostController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    private BlogPostPayload savePost(@RequestBody BlogPostPayload body) {
+    private BlogPost savePost(@RequestBody BlogPostPayload body) {
         return bps.save(body);
     }
 

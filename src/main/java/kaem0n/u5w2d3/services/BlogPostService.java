@@ -24,10 +24,9 @@ public class BlogPostService {
         return bpd.findAll(p);
     }
 
-    public BlogPostPayload save(BlogPostPayload body) {
+    public BlogPost save(BlogPostPayload body) {
         BlogPost newPost = new BlogPost(body.getCategory(), body.getTitle(), body.getContent(), body.getCoverUrl(), body.getReadingTime(), as.findById(body.getAuthorId()));
-        bpd.save(newPost);
-        return body;
+        return bpd.save(newPost);
     }
 
     public BlogPost findById(long id) {
