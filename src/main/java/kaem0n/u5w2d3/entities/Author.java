@@ -1,9 +1,11 @@
 package kaem0n.u5w2d3.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,6 +24,9 @@ public class Author {
     private String email;
     private LocalDate birthday;
     private String avatar;
+    @OneToMany(mappedBy = "author")
+    @JsonIgnore
+    private List<BlogPost> posts;
 
     public Author(String name, String surname, String email, LocalDate birthday) {
         this.name = name;
