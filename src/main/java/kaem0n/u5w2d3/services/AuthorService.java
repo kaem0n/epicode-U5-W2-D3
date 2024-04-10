@@ -1,33 +1,37 @@
 package kaem0n.u5w2d3.services;
 
 import kaem0n.u5w2d3.entities.Author;
+import kaem0n.u5w2d3.exceptions.BadRequestException;
 import kaem0n.u5w2d3.exceptions.NotFoundException;
+import kaem0n.u5w2d3.repositories.AuthorDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class AuthorService {
-    private final List<Author> authorList = new ArrayList<>();
+    @Autowired
+    private AuthorDAO ad;
 
-    public List<Author> findAll() {
-        return this.authorList;
+    public Page<Author> findAll(int page, int size, String sortBy) {
+        if (size > 50) size = 50;
+        Pageable p = PageRequest.of(page, size, Sort.by(sortBy));
+        return ad.findAll(p);
     }
 
     public Author save(Author body) {
-        body.setAvatar("https://ui-avatars.com/api/?name=" + body.getName() + "+" + body.getSurname());
-        this.authorList.add(body);
-        return body;
+        if (!ad.existsByEmail(body.getEmail())) {
+            body.setAvatar("https://ui-avatars.com/api/?name=" + body.getName() + "+" + body.getSurname());
+            ad.save(body);
+            return body;
+        } else throw new BadRequestException("Email \"" + body.getEmail() + "\" is already taken.");
     }
 
     public Author findById(long id) {
-        Author found = null;
-        for (Author author : this.authorList) {
-            if(author.getId() == id) found = author;
-        }
-        if (found == null) throw new NotFoundException(id);
-        else return found;
+        return ad.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
     public Author update(long id, Author updatedBody) {
@@ -42,6 +46,6 @@ public class AuthorService {
 
     public void delete(long id) {
         Author found = this.findById(id);
-        this.authorList.remove(found);
+        ad.delete(found);
     }
 }
